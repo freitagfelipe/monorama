@@ -58,11 +58,13 @@ func _physics_process(_delta):
 		emit_signal("player_move", "Player position: %s %s" % [position.x, position.y])
 	
 	if last_animation != current_animation:
+		print(current_animation)
+		
 		$Sprite.play(current_animation)
 		
-		emit_signal("player_animation", "Player animation: %s" % [$Sprite.animation])
-	else:
 		last_animation = current_animation
+		
+		emit_signal("player_animation", "Player animation: %s" % [$Sprite.animation])
 	
 func set_is_receving_input(state):
 	is_receving_input = state
