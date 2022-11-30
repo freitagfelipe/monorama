@@ -1,10 +1,8 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://resources/fonts/MainFont.tres" type="DynamicFontData" id=1]
 [ext_resource path="res://scripts/host/HostScene.gd" type="Script" id=2]
 [ext_resource path="res://scenes/enviroment/Enviroment.tscn" type="PackedScene" id=3]
-[ext_resource path="res://scenes/characters/MainCharacter.tscn" type="PackedScene" id=4]
-[ext_resource path="res://scenes/characters/SecondCharacter.tscn" type="PackedScene" id=5]
 
 [sub_resource type="Animation" id=2]
 length = 0.001
@@ -63,9 +61,3 @@ margin_right = 117.0
 margin_bottom = 42.0
 custom_fonts/font = SubResource( 1 )
 text = "waiting for player."
-
-[node name="SecondCharacter" parent="." instance=ExtResource( 5 )]
-position = Vector2( 542, -235 )
-
-[node name="Character" parent="." instance=ExtResource( 4 )]
-position = Vector2( 529, 301 )

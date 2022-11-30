@@ -15,7 +15,7 @@ script = ExtResource( 2 )
 
 [node name="NinePatchRect" type="NinePatchRect" parent="."]
 visible = false
-margin_right = 158.0
+margin_right = 100.0
 margin_bottom = 45.0
 rect_scale = Vector2( 2, 2 )
 texture = ExtResource( 1 )
