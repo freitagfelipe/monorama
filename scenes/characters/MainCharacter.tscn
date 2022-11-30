@@ -4,11 +4,11 @@
 [ext_resource path="res://assets/players/players.png" type="Texture" id=2]
 [ext_resource path="res://scenes/message/Message.tscn" type="PackedScene" id=3]
 
-[sub_resource type="AtlasTexture" id=3]
+[sub_resource type="AtlasTexture" id=57]
 atlas = ExtResource( 2 )
 region = Rect2( 16, 48, 16, 16 )
 
-[sub_resource type="AtlasTexture" id=4]
+[sub_resource type="AtlasTexture" id=58]
 atlas = ExtResource( 2 )
 region = Rect2( 16, 0, 16, 16 )
 
@@ -20,23 +20,23 @@ region = Rect2( 16, 16, 16, 16 )
 atlas = ExtResource( 2 )
 region = Rect2( 16, 32, 16, 16 )
 
-[sub_resource type="AtlasTexture" id=6]
+[sub_resource type="AtlasTexture" id=59]
 atlas = ExtResource( 2 )
 region = Rect2( 0, 48, 16, 16 )
 
-[sub_resource type="AtlasTexture" id=7]
+[sub_resource type="AtlasTexture" id=60]
 atlas = ExtResource( 2 )
 region = Rect2( 32, 48, 16, 16 )
 
-[sub_resource type="AtlasTexture" id=8]
+[sub_resource type="AtlasTexture" id=61]
 atlas = ExtResource( 2 )
 region = Rect2( 0, 0, 16, 16 )
 
-[sub_resource type="AtlasTexture" id=9]
+[sub_resource type="AtlasTexture" id=62]
 atlas = ExtResource( 2 )
 region = Rect2( 32, 0, 16, 16 )
 
-[sub_resource type="AtlasTexture" id=10]
+[sub_resource type="AtlasTexture" id=63]
 atlas = ExtResource( 2 )
 region = Rect2( 0, 16, 16, 16 )
 
@@ -48,18 +48,18 @@ region = Rect2( 32, 16, 16, 16 )
 atlas = ExtResource( 2 )
 region = Rect2( 0, 32, 16, 16 )
 
-[sub_resource type="AtlasTexture" id=14]
+[sub_resource type="AtlasTexture" id=64]
 atlas = ExtResource( 2 )
 region = Rect2( 32, 32, 16, 16 )
 
-[sub_resource type="SpriteFrames" id=2]
+[sub_resource type="SpriteFrames" id=65]
 animations = [ {
-"frames": [ SubResource( 3 ) ],
+"frames": [ SubResource( 57 ) ],
 "loop": true,
 "name": "Idle back",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 4 ) ],
+"frames": [ SubResource( 58 ) ],
 "loop": true,
 "name": "Idle front",
 "speed": 5.0
@@ -74,28 +74,28 @@ animations = [ {
 "name": "Idle right",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 6 ), SubResource( 7 ) ],
+"frames": [ SubResource( 59 ), SubResource( 60 ) ],
 "loop": true,
 "name": "Walking back",
 "speed": 3.0
 }, {
-"frames": [ SubResource( 8 ), SubResource( 9 ) ],
+"frames": [ SubResource( 61 ), SubResource( 62 ) ],
 "loop": true,
 "name": "Walking front",
 "speed": 3.0
 }, {
-"frames": [ SubResource( 10 ), SubResource( 11 ) ],
+"frames": [ SubResource( 63 ), SubResource( 11 ) ],
 "loop": true,
 "name": "Walking left",
 "speed": 3.0
 }, {
-"frames": [ SubResource( 13 ), SubResource( 14 ) ],
+"frames": [ SubResource( 13 ), SubResource( 64 ) ],
 "loop": true,
 "name": "Walking right",
 "speed": 3.0
 } ]
 
-[sub_resource type="RectangleShape2D" id=1]
+[sub_resource type="RectangleShape2D" id=66]
 extents = Vector2( 13, 7 )
 
 [node name="Character" type="KinematicBody2D"]
@@ -104,18 +104,20 @@ speed = 100
 
 [node name="Sprite" type="AnimatedSprite" parent="."]
 scale = Vector2( 2, 2 )
-frames = SubResource( 2 )
+frames = SubResource( 65 )
 animation = "Idle front"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 1, 9 )
-shape = SubResource( 1 )
+shape = SubResource( 66 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
+limit_left = 200
+limit_top = -450
+limit_right = 1750
+limit_bottom = 400
+editor_draw_limits = true
 
 [node name="Message" parent="." instance=ExtResource( 3 )]
-margin_left = -98.0
-margin_top = -114.0
-margin_right = -98.0
-margin_bottom = -114.0
+position = Vector2( -94, -114 )

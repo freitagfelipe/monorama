@@ -148,10 +148,7 @@ position = Vector2( 1, 9 )
 shape = SubResource( 1 )
 
 [node name="Message" parent="." instance=ExtResource( 1 )]
-margin_left = -101.0
-margin_top = -112.0
-margin_right = -101.0
-margin_bottom = -112.0
+position = Vector2( -94, -114 )
 
 [node name="SleepingText" type="Label" parent="."]
 anchor_left = 0.5
