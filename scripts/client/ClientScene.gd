@@ -20,8 +20,8 @@ func _ready():
 	my_player.connect("player_move", ClientConnectionHandler, "send_message")
 	my_player.connect("player_animation", ClientConnectionHandler, "send_message")
 	$Enviroment.connect("send_message_to_other_player", ClientConnectionHandler, "send_message")
-	$Enviroment.connect("is_receving_input", $Character, "set_is_receving_input")
-	$Enviroment.connect("send_message", $Character/Message, "show_message")
+	$Enviroment.connect("is_receving_input", my_player, "set_is_receving_input")
+	$Enviroment.connect("send_message", my_player.get_node("Message"), "show_message")
 	
 	ClientConnectionHandler.send_message("Player position: %s %s" % [my_player.position.x, my_player.position.y])
 	

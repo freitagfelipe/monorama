@@ -28,8 +28,8 @@ func _ready():
 	
 	HostController.connect("player_connected", self, "player_connected")
 	$Enviroment.connect("send_message_to_other_player", HostController, "send_message")
-	$Enviroment.connect("is_receving_input", $Character, "set_is_receving_input")
-	$Enviroment.connect("send_message", $Character/Message, "show_message")
+	$Enviroment.connect("is_receving_input", my_player, "set_is_receving_input")
+	$Enviroment.connect("send_message", my_player.get_node("Message"), "show_message")
 	my_player.connect("player_move", HostController, "send_message")
 	my_player.connect("player_animation", HostController, "send_message")
 	
