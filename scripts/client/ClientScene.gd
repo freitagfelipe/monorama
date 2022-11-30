@@ -1,17 +1,24 @@
 extends Node2D
 
+var main_character_node := preload("res://scenes/characters/MainCharacter.tscn")
 var second_character_node := preload("res://scenes/characters/SecondCharacter.tscn")
-onready var my_player := $Character
+var my_player
 var second_player
 
 func _ready():
 	print("Starting client scene")
 	
+	my_player = main_character_node.instance()
 	second_player = second_character_node.instance()
 	
-	add_child(second_player)
+	$Enviroment/PlayersSpawn.add_child(my_player)
+	$Enviroment/PlayersSpawn.add_child(second_player)
 	
+	my_player.position = Vector2(539, -172)
+	
+	second_player.get_node("SleepingText").visible = false
 	my_player.connect("player_move", ClientConnectionHandler, "send_message")
+	my_player.connect("player_animation", ClientConnectionHandler, "send_message")
 	$Enviroment.connect("send_message_to_other_player", ClientConnectionHandler, "send_message")
 	$Enviroment.connect("is_receving_input", $Character, "set_is_receving_input")
 	$Enviroment.connect("send_message", $Character/Message, "show_message")
@@ -36,3 +43,8 @@ func update_game():
 				data.remove(0)
 		
 				second_player.get_node("Message").show_message(data.join(" "))
+			elif package.begins_with("Player animation"):
+				data.remove(0)
+				data.remove(0)
+				
+				second_player.get_node("Sprite").play(data.join(" "))
