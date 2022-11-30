@@ -1,27 +1,121 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://scripts/main_character/main_character.gd" type="Script" id=1]
-[ext_resource path="res://icon.png" type="Texture" id=2]
+[ext_resource path="res://assets/players/players.png" type="Texture" id=2]
 [ext_resource path="res://scenes/message/Message.tscn" type="PackedScene" id=3]
 
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 2 )
+region = Rect2( 16, 48, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 2 )
+region = Rect2( 16, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 2 )
+region = Rect2( 16, 16, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=12]
+atlas = ExtResource( 2 )
+region = Rect2( 16, 32, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 48, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=7]
+atlas = ExtResource( 2 )
+region = Rect2( 32, 48, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=8]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=9]
+atlas = ExtResource( 2 )
+region = Rect2( 32, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=10]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 16, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=11]
+atlas = ExtResource( 2 )
+region = Rect2( 32, 16, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=13]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 32, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=14]
+atlas = ExtResource( 2 )
+region = Rect2( 32, 32, 16, 16 )
+
+[sub_resource type="SpriteFrames" id=2]
+animations = [ {
+"frames": [ SubResource( 3 ) ],
+"loop": true,
+"name": "Idle back",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 4 ) ],
+"loop": true,
+"name": "Idle front",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 5 ) ],
+"loop": true,
+"name": "Idle left",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 12 ) ],
+"loop": true,
+"name": "Idle right",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 6 ), SubResource( 7 ) ],
+"loop": true,
+"name": "Walking back",
+"speed": 3.0
+}, {
+"frames": [ SubResource( 8 ), SubResource( 9 ) ],
+"loop": true,
+"name": "Walking front",
+"speed": 3.0
+}, {
+"frames": [ SubResource( 10 ), SubResource( 11 ) ],
+"loop": true,
+"name": "Walking left",
+"speed": 3.0
+}, {
+"frames": [ SubResource( 13 ), SubResource( 14 ) ],
+"loop": true,
+"name": "Walking right",
+"speed": 3.0
+} ]
+
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 32, 32 )
+extents = Vector2( 13, 7 )
 
 [node name="Character" type="KinematicBody2D"]
 script = ExtResource( 1 )
 speed = 100
 
-[node name="Sprite" type="Sprite" parent="."]
-texture = ExtResource( 2 )
+[node name="Sprite" type="AnimatedSprite" parent="."]
+scale = Vector2( 2, 2 )
+frames = SubResource( 2 )
+animation = "Idle front"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 1, 9 )
 shape = SubResource( 1 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
 
 [node name="Message" parent="." instance=ExtResource( 3 )]
-margin_left = -156.0
-margin_top = -138.0
-margin_right = -156.0
-margin_bottom = -138.0
+margin_left = -98.0
+margin_top = -114.0
+margin_right = -98.0
+margin_bottom = -114.0
