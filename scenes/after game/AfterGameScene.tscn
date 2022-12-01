@@ -1,0 +1,147 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://resources/fonts/MainFont.tres" type="DynamicFontData" id=1]
+[ext_resource path="res://scripts/after game/AfterGameScene.gd" type="Script" id=2]
+
+[sub_resource type="DynamicFont" id=2]
+font_data = ExtResource( 1 )
+
+[sub_resource type="Animation" id=3]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:text")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ "Waiting other player to continue" ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "WaitingAnimation"
+length = 2.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:text")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 1, 1.5, 2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ "Waiting other player to continue", "Waiting other player to continue.", "Waiting other player to continue..", "Waiting other player to continue...", "Waiting other player to continue..." ]
+}
+
+[sub_resource type="DynamicFont" id=5]
+font_data = ExtResource( 1 )
+
+[sub_resource type="Animation" id=6]
+resource_name = "OtherPlayerWaitingAnimation"
+length = 2.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:text")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 1, 1.5, 2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ "other player waiting", "other player waiting.", "other player waiting..", "other player waiting...", "other player waiting..." ]
+}
+
+[sub_resource type="Animation" id=7]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:text")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ "other player waiting." ]
+}
+
+[sub_resource type="DynamicFont" id=1]
+font_data = ExtResource( 1 )
+
+[node name="AfterGameScene" type="Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -512.0
+margin_top = -300.0
+margin_right = 512.0
+margin_bottom = 300.0
+script = ExtResource( 2 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -2500.0
+margin_top = -2500.0
+margin_right = 2500.0
+margin_bottom = 2500.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="WaitingOtherPlayerBeforeGo" type="Label" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -185.5
+margin_top = -8.5
+margin_right = 185.5
+margin_bottom = 8.5
+custom_fonts/font = SubResource( 2 )
+text = "Waiting other player to continue"
+
+[node name="Animation" type="AnimationPlayer" parent="WaitingOtherPlayerBeforeGo"]
+anims/RESET = SubResource( 3 )
+anims/WaitingAnimation = SubResource( 4 )
+
+[node name="OtherPlayerWaiting" type="Label" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -117.5
+margin_top = -8.5
+margin_right = 117.5
+margin_bottom = 8.5
+custom_fonts/font = SubResource( 5 )
+text = "other player waiting."
+
+[node name="Animation" type="AnimationPlayer" parent="OtherPlayerWaiting"]
+anims/OtherPlayerWaitingAnimation = SubResource( 6 )
+anims/RESET = SubResource( 7 )
+
+[node name="LobbyButton" type="Button" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -85.5
+margin_top = 215.0
+margin_right = 85.5
+margin_bottom = 238.0
+custom_fonts/font = SubResource( 1 )
+text = "back to lobby"
+
+[connection signal="button_up" from="LobbyButton" to="." method="lobby_button_trigger"]
