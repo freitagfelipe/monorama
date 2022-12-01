@@ -1987,6 +1987,8 @@ points = PoolVector2Array( 0, 0, 27, 0, 27, 28, 0, 28 )
 [node name="Enviroment" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = -34.0
+margin_right = -34.0
 script = ExtResource( 3 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
@@ -2038,7 +2040,7 @@ tile_data = PoolIntArray( -655349, 4, 0, -655348, 5, 0, -655347, 5, 0, -655346, 
 tile_set = SubResource( 24 )
 show_collision = true
 format = 1
-tile_data = PoolIntArray( -327669, 0, 0, -262139, 4, 0 )
+tile_data = PoolIntArray( -327669, 0, 0, -262139, 4, 0, 196631, 5, 0, 196633, 5, 0 )
 
 [node name="TileMapPlayerBase" type="TileMap" parent="."]
 tile_set = SubResource( 55 )
