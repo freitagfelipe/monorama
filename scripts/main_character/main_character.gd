@@ -56,8 +56,9 @@ func _physics_process(_delta):
 				current_animation = "Idle back"
 			"down":
 				current_animation = "Idle front"
-		
-	emit_signal("player_move", "Player position: %s %s" % [position.x, position.y])
+	
+	if velocity != Vector2.ZERO:
+		emit_signal("player_move", "Player position: %s %s" % [position.x, position.y])
 	
 	if last_animation != current_animation:
 		print(current_animation)
