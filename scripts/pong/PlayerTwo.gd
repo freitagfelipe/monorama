@@ -16,4 +16,5 @@ func _physics_process(delta):
 	
 	move_and_slide(velocity)
 	
-	emit_signal("player_move", "Pong player position: %f %f" % [position.x, position.y])
+	if velocity != Vector2.ZERO:
+		emit_signal("player_move", "Pong player position: %f %f" % [position.x, position.y])

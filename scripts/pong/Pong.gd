@@ -3,6 +3,7 @@ extends Control
 var my_player: KinematicBody2D
 var second_player: KinematicBody2D
 var update_game_thread = Thread.new()
+var in_game := true
 var in_use
 
 func _ready():
@@ -34,7 +35,7 @@ func _ready():
 	update_game_thread.start(self, "update_game")
 	
 func update_game():
-	while true:
+	while in_game:
 		var package = in_use.socket.get_var()
 		
 		if package:
@@ -54,12 +55,35 @@ func update_game():
 				var old_score = $Score.text.split(" x ")
 				var new_score = [int(old_score[0]), int(old_score[1])]
 				
-				if player == 1 and HostController.in_use:
-					new_score[0] += 1
+				if HostController.in_use:
+					if player == 1:
+						new_score[0] += 1
+					else:
+						new_score[1] += 1
 				else:
-					new_score[1] += 1
+					if player == 1:
+						new_score[0] += 1
+					else:
+						new_score[1] += 1
 
 				$Score.text = "%d x %d" % [new_score[0], new_score[1]]
+			elif package.begins_with("Finish game"):
+				var score = $Score.text.split(" x ")
+				
+				in_game = false
+	
+				if HostController.in_use:
+					go_to_after_game(int(score[0]))
+				else:
+					go_to_after_game(int(score[1]))
+
+func _process(_delta):
+	var score = $Score.text.split(" x ")
+	
+	if HostController.in_use and int(score[0]) >= 7:
+		HostController.send_message("Finish game")
+	elif ClientConnectionHandler.in_use and int(score[1]) >= 7:
+		ClientConnectionHandler.send_message("Finish game")
 
 func update_score(message):
 	var data = message.split(" ")
@@ -74,3 +98,17 @@ func update_score(message):
 		new_score[1] += 1
 
 	$Score.text = "%d x %d" % [new_score[0], new_score[1]]
+
+func go_to_after_game(my_score):
+	in_use.send_message("Finish game")
+	
+	var after_game
+	
+	if my_score >= 7:
+		after_game = load("res://scenes/after game/Winner.tscn")
+	else:
+		after_game = load("res://scenes/after game/Loser.tscn")
+	
+	update_game_thread.wait_to_finish()
+	
+	get_tree().change_scene_to(after_game)
