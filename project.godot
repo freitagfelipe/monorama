@@ -28,6 +28,7 @@ config/icon="res://icon.png"
 
 ClientConnectionHandler="*res://scripts/client/ClientConnectionHandler.gd"
 HostController="*res://scripts/host/HostController.gd"
+AfterGameController="*res://scripts/after game/AfterGameController.gd"
 
 [display]
 
@@ -69,7 +70,7 @@ text={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777221,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
-"exit text"={
+pause={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777217,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
