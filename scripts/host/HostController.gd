@@ -4,11 +4,14 @@ var tcp := TCP_Server.new()
 var udp_watcher := PacketPeerUDP.new()
 var waiting_second_player := true
 var socket: StreamPeerTCP
+var in_use := false
 
 signal player_connected
 
 func init_server():
 	print("Initing server")
+	
+	in_use = true
 	
 	var result_udp_watcher = udp_watcher.listen(7777, "0.0.0.0")
 	var result_tcp_listen = tcp.listen(1126, "0.0.0.0")
