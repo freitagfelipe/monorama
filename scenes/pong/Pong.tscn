@@ -1,0 +1,147 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://assets/fonts/dogica.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://scripts/pong/PlayerTwo.gd" type="Script" id=2]
+[ext_resource path="res://scripts/pong/Pong.gd" type="Script" id=3]
+[ext_resource path="res://scripts/pong/PlayerOne.gd" type="Script" id=4]
+[ext_resource path="res://scripts/pong/Ball.gd" type="Script" id=5]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 5, 50 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 5, 50 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 550, 3 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 549.75, 3 )
+
+[sub_resource type="DynamicFont" id=5]
+size = 24
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=6]
+font_data = ExtResource( 1 )
+
+[sub_resource type="RectangleShape2D" id=7]
+extents = Vector2( 12.5, 12.5 )
+
+[node name="Pong" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 3 )
+
+[node name="Background" type="ColorRect" parent="."]
+margin_left = -2405.0
+margin_top = -2529.0
+margin_right = 2595.0
+margin_bottom = 2471.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="PlayerOne" type="KinematicBody2D" parent="."]
+position = Vector2( 10, 490 )
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_group_": true
+}
+speed = 150
+
+[node name="ColorRect" type="ColorRect" parent="PlayerOne"]
+margin_top = -30.0
+margin_right = 10.0
+margin_bottom = 70.0
+color = Color( 1, 0.321569, 0.133333, 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerOne"]
+position = Vector2( 5, 20 )
+shape = SubResource( 1 )
+
+[node name="PlayerTwo" type="KinematicBody2D" parent="."]
+position = Vector2( 1004, 35 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_group_": true
+}
+speed = 150
+
+[node name="ColorRect" type="ColorRect" parent="PlayerTwo"]
+margin_right = 10.0
+margin_bottom = 100.0
+color = Color( 0.576471, 0.0980392, 0.0392157, 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerTwo"]
+position = Vector2( 5, 50 )
+shape = SubResource( 2 )
+
+[node name="TopEdge" type="StaticBody2D" parent="."]
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="ColorRect" type="ColorRect" parent="TopEdge"]
+margin_left = -44.0
+margin_right = 1056.0
+margin_bottom = 6.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TopEdge"]
+position = Vector2( 506, 3 )
+shape = SubResource( 3 )
+
+[node name="BottonEdge" type="StaticBody2D" parent="."]
+position = Vector2( -51, 594 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="ColorRect" type="ColorRect" parent="BottonEdge"]
+margin_right = 1100.0
+margin_bottom = 6.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BottonEdge"]
+position = Vector2( 550.25, 3 )
+shape = SubResource( 4 )
+
+[node name="ScoreText" type="Label" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -60.0
+margin_top = -275.0
+margin_right = 60.0
+margin_bottom = -254.0
+custom_fonts/font = SubResource( 5 )
+text = "score"
+
+[node name="Score" type="Label" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -52.5
+margin_top = -245.0
+margin_right = 52.5
+margin_bottom = -228.0
+custom_fonts/font = SubResource( 6 )
+text = "0 x 0"
+align = 1
+
+[node name="Ball" type="KinematicBody2D" parent="."]
+position = Vector2( 512, 300 )
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="ColorRect" type="ColorRect" parent="Ball"]
+margin_left = -13.0
+margin_top = -12.0
+margin_right = 12.0
+margin_bottom = 13.0
+color = Color( 1, 0, 0, 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ball"]
+position = Vector2( -0.5, 0.5 )
+shape = SubResource( 7 )
