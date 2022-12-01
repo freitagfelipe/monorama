@@ -17,7 +17,12 @@ func _ready():
 	$Enviroment/PlayersSpawn.add_child(my_player)
 	$Enviroment/PlayersSpawn.add_child(second_player)
 	
-	my_player.position = Vector2(539, -172)
+	if AfterGameController.is_after_game:
+		my_player.position = Vector2(1648, 227)
+		
+		AfterGameController.is_after_game = false
+	else:
+		my_player.position = Vector2(544, -172)
 	
 	second_player.get_node("SleepingText").visible = false
 	
@@ -58,9 +63,13 @@ func update_game():
 			elif package.begins_with("Player waiting for game"):
 				$Enviroment/GameTotem.set_other_player_waiting(int(data[4]))
 			elif package.begins_with("Start game"):
-				get_tree().change_scene_to(pong_scene)
+				is_in_current_scene = false
+				
+				return
 
 func start_pong():
-	is_in_current_scene = false
-	
 	ClientConnectionHandler.send_message("Start game")
+	
+	update_game_thread.wait_to_finish()
+	
+	get_tree().change_scene_to(pong_scene)

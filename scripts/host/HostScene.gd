@@ -10,13 +10,13 @@ var my_player
 var second_player: KinematicBody2D
 var update_game_thread = Thread.new()
 
-var contador = 0
-
 func _ready():
-	if HostController.init_server() == -1:
+	if not AfterGameController.is_after_game and HostController.init_server() == -1:
 		get_tree().change_scene_to(error_scene)
 		
 		return
+	
+	$WaitingAnimation.play("WaitingAnimation")
 
 	my_player = main_character_node.instance()
 	second_player = second_character_node.instance()
@@ -24,10 +24,17 @@ func _ready():
 	$Enviroment/PlayersSpawn.add_child(my_player)
 	$Enviroment/PlayersSpawn.add_child(second_player)
 	
-	my_player.position = Vector2(548, 157)
-	second_player.position = Vector2(539, -172)
-	
-	$WaitingAnimation.play("WaitingAnimation")
+	if AfterGameController.is_after_game:
+		my_player.position = Vector2(1520, 229)
+		second_player.position = Vector2(1648, 227)
+		
+		AfterGameController.is_after_game = false
+		
+		player_connected()
+	else:
+		$Enviroment/GameTotem.set_waiting_other_player(true)
+		my_player.position = Vector2(548, 157)
+		second_player.position = Vector2(544, -172)
 	
 	second_player.get_node("AnimationPlayer").play("SleepingTextAnimation")
 	
@@ -37,7 +44,6 @@ func _ready():
 	$Enviroment.connect("is_receving_input", my_player, "set_is_receving_input")
 	$Enviroment.connect("send_message", my_player.get_node("Message"), "show_message")
 	
-	$Enviroment/GameTotem.set_waiting_other_player(true)
 	$Enviroment/GameTotem.connect("turn_input", my_player, "set_is_receving_input")
 	$Enviroment/GameTotem.connect("player_attach", HostController, "send_message")
 	$Enviroment/GameTotem.connect("start_game", self, "start_pong")
@@ -45,8 +51,6 @@ func _ready():
 	my_player.connect("player_move", HostController, "send_message")
 	my_player.connect("player_animation", HostController, "send_message")
 	my_player.connect("player_position", $Enviroment/GameTotem, "totem_state")
-	
-	
 	
 	update_game_thread.start(self, "update_game")
 
@@ -64,7 +68,7 @@ func player_connected():
 	has_player_connected = true
 	
 func update_game():
-	while self.is_in_current_scene:
+	while is_in_current_scene:
 		if has_player_connected:
 			var package = HostController.socket.get_var()
 			
@@ -85,9 +89,15 @@ func update_game():
 				elif package.begins_with("Player waiting for game"):
 					$Enviroment/GameTotem.set_other_player_waiting(int(data[4]))
 				elif package.begins_with("Start game"):
-					get_tree().change_scene_to(pong_scene)
+					is_in_current_scene = false
+					
+					return
 
 func start_pong():
 	is_in_current_scene = false
 	
 	HostController.send_message("Start game")
+
+	update_game_thread.wait_to_finish()
+	
+	get_tree().change_scene_to(pong_scene)

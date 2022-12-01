@@ -17,16 +17,16 @@ func _init():
 	
 	thread.start(self, "find_servers")
 	
+	thread.wait_to_finish()
 
 func find_servers():
 	print("Start finding servers")
 
 	var timer = Timer.new()
 	
-	add_child(timer)
+	get_parent().add_child(timer)
 	
 	timer.one_shot = true
-	
 	timer.start(5)
 	
 	var servers_ip = []
@@ -45,6 +45,6 @@ func find_servers():
 		
 	print("Finish finding servers")
 	
-	remove_child(timer)
+	get_parent().remove_child(timer)
 
 	emit_signal("finish_finding_severs", servers_ip)
