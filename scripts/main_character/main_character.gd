@@ -7,10 +7,13 @@ var direction: String
 var current_animation: String
 var last_animation: String = "Idle front"
 
-signal player_move(position)
+signal player_move(message)
 signal player_animation(animation)
+signal player_position(position)
 
 func _physics_process(_delta):
+	emit_signal("player_position", position)
+	
 	if not is_receving_input:
 		return
 	
@@ -54,8 +57,7 @@ func _physics_process(_delta):
 			"down":
 				current_animation = "Idle front"
 		
-	if velocity != Vector2.ZERO:
-		emit_signal("player_move", "Player position: %s %s" % [position.x, position.y])
+	emit_signal("player_move", "Player position: %s %s" % [position.x, position.y])
 	
 	if last_animation != current_animation:
 		print(current_animation)
@@ -67,4 +69,6 @@ func _physics_process(_delta):
 		emit_signal("player_animation", "Player animation: %s" % [$Sprite.animation])
 	
 func set_is_receving_input(state):
+	print("Is receving input ", state)
+	
 	is_receving_input = state
