@@ -74,6 +74,8 @@ func update_game():
 			elif package.begins_with("disconnect"):
 				emit_signal("close_client_thread")
 				
+				ClientConnectionHandler.send_message("disconnect")
+				
 				return
 
 func start_pong():

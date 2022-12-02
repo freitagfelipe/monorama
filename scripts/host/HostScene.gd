@@ -151,6 +151,8 @@ func back_to_main_screen():
 		HostController.send_message("disconnect")
 		
 		HostController.socket = null
+		
+	update_game_thread.wait_to_finish()
 	
 	HostController.in_use = false
 	HostController.waiting_second_player = false
