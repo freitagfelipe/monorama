@@ -4,7 +4,7 @@ export var speed: int
 
 signal player_move(message)
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	var velocity = Vector2.ZERO
 	
 	if Input.is_action_pressed("down"):

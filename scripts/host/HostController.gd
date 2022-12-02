@@ -2,7 +2,7 @@ extends Node
 
 var tcp := TCP_Server.new()
 var udp_watcher := PacketPeerUDP.new()
-var waiting_second_player := true
+var waiting_second_player: bool
 var socket: StreamPeerTCP
 var in_use := false
 
@@ -12,12 +12,16 @@ func init_server():
 	print("Initing server")
 	
 	in_use = true
+	waiting_second_player = true
 	
-	var result_udp_watcher = udp_watcher.listen(7777, "0.0.0.0")
-	var result_tcp_listen = tcp.listen(1126, "0.0.0.0")
+	if not tcp.is_listening():
+		var result_tcp_listen = tcp.listen(1126, "0.0.0.0")
 	
-	if result_tcp_listen != OK or result_udp_watcher != OK:
-		return -1
+		if result_tcp_listen != OK:
+			return -1
+		
+	if not udp_watcher.is_listening():
+		var result_udp_watcher = udp_watcher.listen(7777, "0.0.0.0")
 		
 	var responding_broadcast_thread := Thread.new()
 	var recieve_connection_thread := Thread.new()
@@ -26,15 +30,19 @@ func init_server():
 	recieve_connection_thread.start(self, "recieve_connection")
 
 func responding_broadcast():
-	print("Responding broadcast")
+	print("Starting responding broadcast")
+	
+	while udp_watcher.get_var():
+		pass
 	
 	while waiting_second_player:
 		if udp_watcher.wait() == OK:
 			if udp_watcher.get_var() == "Searching fliper server":
-				print("Responding broadcast")
-				
-				udp_watcher.set_dest_address(udp_watcher.get_packet_ip(), udp_watcher.get_packet_port())
-				udp_watcher.put_var("Found fliper server")
+				if in_use:
+					print("Responding broadcast")
+					
+					udp_watcher.set_dest_address(udp_watcher.get_packet_ip(), udp_watcher.get_packet_port())
+					udp_watcher.put_var("Found fliper server")
 				
 	print("Finished responding broadcast")
 			

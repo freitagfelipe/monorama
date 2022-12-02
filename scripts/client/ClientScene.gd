@@ -8,6 +8,8 @@ var my_player: KinematicBody2D
 var second_player: KinematicBody2D
 var update_game_thread = Thread.new()
 
+signal close_client_thread
+
 func _ready():
 	print("Starting client scene")
 	
@@ -34,16 +36,21 @@ func _ready():
 	$Enviroment/GameTotem.connect("start_game", self, "start_pong")
 	$Enviroment/GameTotem.connect("player_attach", ClientConnectionHandler, "send_message")
 	
+	$Enviroment/MenuCanvas.connect("is_receving_input", my_player, "set_is_receving_input")
+	$Enviroment/MenuCanvas.connect("back_to_main_screen", self, "back_to_main_screen")
+	
 	my_player.connect("player_move", ClientConnectionHandler, "send_message")
 	my_player.connect("player_animation", ClientConnectionHandler, "send_message")
 	my_player.connect("player_position", $Enviroment/GameTotem, "totem_state")
 	
 	ClientConnectionHandler.send_message("Player position: %s %s" % [my_player.position.x, my_player.position.y])
 	
+	connect("close_client_thread", self, "reset_client")
+	
 	update_game_thread.start(self, "update_game")
 
 func update_game():
-	while self.is_in_current_scene:
+	while is_in_current_scene:
 		var package = ClientConnectionHandler.socket.get_var()
 		
 		if package:
@@ -64,6 +71,8 @@ func update_game():
 				$Enviroment/GameTotem.set_other_player_waiting(int(data[4]))
 			elif package.begins_with("Start game"):
 				is_in_current_scene = false
+			elif package.begins_with("disconnect"):
+				emit_signal("close_client_thread")
 				
 				return
 
@@ -73,3 +82,24 @@ func start_pong():
 	update_game_thread.wait_to_finish()
 	
 	get_tree().change_scene_to(pong_scene)
+
+func reset_client():
+	ClientConnectionHandler.in_use = false
+	
+	ClientConnectionHandler.socket = StreamPeerTCP.new()
+	
+	var main_screen = load("res://scenes/main/MainScene.tscn")
+	
+	get_tree().change_scene_to(main_screen)
+
+func back_to_main_screen():
+	print("Going to main screen")
+	
+	is_in_current_scene = false
+	
+	var main_screen = load("res://scenes/main/MainScene.tscn")
+	
+	ClientConnectionHandler.send_message("disconnect")
+	ClientConnectionHandler.socket = StreamPeerTCP.new()
+	
+	get_tree().change_scene_to(main_screen)

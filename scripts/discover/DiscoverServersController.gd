@@ -21,10 +21,13 @@ func _init():
 
 func find_servers():
 	print("Start finding servers")
+	
+	while socket.get_var():
+		pass
 
 	var timer = Timer.new()
 	
-	get_parent().add_child(timer)
+	add_child(timer)
 	
 	timer.one_shot = true
 	timer.start(5)
@@ -45,6 +48,6 @@ func find_servers():
 		
 	print("Finish finding servers")
 	
-	get_parent().remove_child(timer)
+	remove_child(timer)
 
 	emit_signal("finish_finding_severs", servers_ip)

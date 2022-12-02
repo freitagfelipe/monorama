@@ -46,6 +46,12 @@ func try_again_button_trigger():
 	if not searching:
 		$SearchingText.visible = true
 		$SearchingAnimation.play("SearchingAnimation")
+		
+		for child_node in $ServersIP/VBoxContainer.get_children():
+			print("Dentro")
+			
+			child_node.queue_free()
+		
 		discover_server.find_servers()
 		$NotFoundServer.visible = false
 

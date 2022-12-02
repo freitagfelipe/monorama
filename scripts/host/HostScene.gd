@@ -10,6 +10,8 @@ var my_player
 var second_player: KinematicBody2D
 var update_game_thread = Thread.new()
 
+signal close_host_thread
+
 func _ready():
 	if not AfterGameController.is_after_game and HostController.init_server() == -1:
 		get_tree().change_scene_to(error_scene)
@@ -48,13 +50,20 @@ func _ready():
 	$Enviroment/GameTotem.connect("player_attach", HostController, "send_message")
 	$Enviroment/GameTotem.connect("start_game", self, "start_pong")
 	
+	$Enviroment/MenuCanvas.connect("is_receving_input", my_player, "set_is_receving_input")
+	$Enviroment/MenuCanvas.connect("back_to_main_screen", self, "back_to_main_screen")
+	
 	my_player.connect("player_move", HostController, "send_message")
 	my_player.connect("player_animation", HostController, "send_message")
 	my_player.connect("player_position", $Enviroment/GameTotem, "totem_state")
 	
+	connect("close_host_thread", self, "reset_lobby")
+	
 	update_game_thread.start(self, "update_game")
 
 func player_connected():
+	print("Other player conected")
+	
 	$CanvasLayer/WaitingText.visible = false
 	$WaitingAnimation.stop()
 	
@@ -90,10 +99,14 @@ func update_game():
 					$Enviroment/GameTotem.set_other_player_waiting(int(data[4]))
 				elif package.begins_with("Start game"):
 					is_in_current_scene = false
+				elif package.begins_with("disconnect"):
+					emit_signal("close_host_thread")
 					
 					return
 
 func start_pong():
+	print("Starting pong")
+	
 	is_in_current_scene = false
 	
 	HostController.send_message("Start game")
@@ -101,3 +114,45 @@ func start_pong():
 	update_game_thread.wait_to_finish()
 	
 	get_tree().change_scene_to(pong_scene)
+
+func reset_lobby():
+	update_game_thread.wait_to_finish()
+	
+	HostController.init_server()
+	
+	$WaitingAnimation.play("WaitingAnimation")
+	
+	$CanvasLayer/WaitingText.visible = true
+	
+	$Enviroment/GameTotem.set_waiting_other_player(true)
+	
+	has_player_connected = false
+	
+	second_player.get_node("SleepingText").visible = true
+	second_player.get_node("AnimationPlayer").play("SleepingTextAnimation")
+	second_player.position = Vector2(544, -172)
+	
+	HostController.init_server()
+	
+	HostController.socket = null
+	
+	update_game_thread = Thread.new()
+	
+	update_game_thread.start(self, "update_game")
+
+func back_to_main_screen():
+	print("Going to main screen")
+	
+	is_in_current_scene = false
+	
+	var main_screen = load("res://scenes/main/MainScene.tscn")
+	
+	if not HostController.waiting_second_player:
+		HostController.send_message("disconnect")
+		
+		HostController.socket = null
+	
+	HostController.in_use = false
+	HostController.waiting_second_player = false
+	
+	get_tree().change_scene_to(main_screen)

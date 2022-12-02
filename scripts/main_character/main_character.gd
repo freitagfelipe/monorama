@@ -70,6 +70,4 @@ func _physics_process(_delta):
 		emit_signal("player_animation", "Player animation: %s" % [$Sprite.animation])
 	
 func set_is_receving_input(state):
-	print("Is receving input ", state)
-	
 	is_receving_input = state
