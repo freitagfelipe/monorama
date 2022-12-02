@@ -1,6 +1,6 @@
-# Fliper
+# Monorama
 
-- ...
+- Jogo feito para o projeto da disciplina de Redes de Computadores.
 
 ## Assets
 
