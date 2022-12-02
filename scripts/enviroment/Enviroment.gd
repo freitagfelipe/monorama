@@ -9,18 +9,19 @@ func _ready():
 
 func _process(_delta):
 	if Input.is_action_just_pressed("text"):
-		var text_state = not $CanvasLayer/Control/TextEdit.visible
+		var text_state = not $TextInputCanvas/Control/TextInput.visible
 		
-		$CanvasLayer/Control/TextEdit.visible = text_state
+		$TextInputCanvas/Control/TextInput.visible = text_state
+		$TextInputCanvas/Control/TextInput.text = ""
 		
 		emit_signal("is_receving_input", not text_state)
 		
 	if Input.is_action_just_pressed("send message"):
-		if $CanvasLayer/Control/TextEdit.text.length() != 0:
-			emit_signal("send_message", $CanvasLayer/Control/TextEdit.text)
-			emit_signal("send_message_to_other_player", "Message: %s" % [$CanvasLayer/Control/TextEdit.text])
+		if $TextInputCanvas/Control/TextInput.text.length() != 0:
+			emit_signal("send_message", $TextInputCanvas/Control/TextInput.text)
+			emit_signal("send_message_to_other_player", "Message: %s" % [$TextInputCanvas/Control/TextInput.text])
 		
 		emit_signal("is_receving_input", true)
 		
-		$CanvasLayer/Control/TextEdit.visible = false
-		$CanvasLayer/Control/TextEdit.text = ""
+		$TextInputCanvas/Control/TextInput.visible = false
+		$TextInputCanvas/Control/TextInput.text = ""
